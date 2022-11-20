@@ -167,6 +167,23 @@ extension secp256k1.Signing.ECDSASigner: DigestSigner, Signer {
         return try secp256k1.Recovery.ECDSASignature(signature.dataValue)
     }
 
+	public func recoverableSignature(forHashed digest: Data) throws -> secp256k1.Recovery.ECDSASignature {
+		var signature = secp256k1_ecdsa_recoverable_signature()
+
+		guard secp256k1_ecdsa_sign_recoverable(
+				secp256k1.Context.raw,
+				&signature,
+				Array(digest),
+				Array(signingKey.rawRepresentation),
+				nil,
+				nil
+		).boolValue else {
+				throw secp256k1Error.underlyingCryptoError
+		}
+
+		return try secp256k1.Recovery.ECDSASignature(signature.dataValue)
+	}
+
     ///  Generates an ECDSA signature over the secp256k1 elliptic curve.
     ///
     /// - Parameter digest: The digest to sign.
