@@ -87,7 +87,7 @@ public extension secp256k1.Signing.PublicKey {
     ///   - tweak: the 32-byte tweak object
     ///   - format: the format of the tweaked `PublicKey` object
     /// - Returns: tweaked `PublicKey` object
-    func multiply(_ tweak: [UInt8], format: secp256k1.Format = .compressed) throws -> Self {
+    public func multiply(_ tweak: [UInt8], format: secp256k1.Format = .compressed) throws -> Self {
         let context = secp256k1.Context.raw
         var pubKey = secp256k1_pubkey()
         var pubKeyLen = format.length
